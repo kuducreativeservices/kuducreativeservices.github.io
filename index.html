@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kudu Creative Services</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --forest:   #122620;
+    --redwine:  #220f10;
+    --savannah: #9e663f;
+    --ivory:    #efeeed;
+    --rose:     #e8d1d1;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    color: var(--ivory);
+    background: var(--redwine);
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 300;
+  }
+
+  .sub {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-size: 0.72rem;
+  }
+
+  /* ======================== NAV ======================== */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    background: var(--redwine);
+    padding: 0.9rem 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(232,209,209,0.1);
+  }
+
+  .nav-logo-img {
+    height: 42px;
+    width: auto;
+    display: block;
+    mix-blend-mode: screen;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.68rem;
+    color: rgba(239,238,237,0.75);
+    text-decoration: none;
+    transition: color 0.3s;
+    position: relative;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px; left: 0;
+    width: 0; height: 1px;
+    background: var(--rose);
+    transition: width 0.3s ease;
+  }
+
+  .nav-links a:hover { color: var(--rose); }
+  .nav-links a:hover::after { width: 100%; }
+
+  .hero {
+    width: 100%;
+    min-height: 82vh;
+    margin-top: 63px;
+    background-image: url('assets/HERO.png');
+    background-size: cover;
+    background-position: center;
+    display: block;
+  }
+
+  
+
+  /* ======================== INTRO ======================== */
+  .intro-strip {
+    background: var(--redwine);
+    padding: 6rem 5rem;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    gap: 5rem;
+  }
+
+  .intro-photo {
+    flex-shrink: 0;
+    width: 300px;
+    height: 380px;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+  }
+
+  .intro-text {
+    text-align: left;
+  }
+
+  .intro-strip .sub { color: var(--rose); margin-bottom: 0.75rem; }
+
+  .intro-strip h2 {
+    font-size: clamp(2.4rem, 5.8vw, 5.3rem);
+    color: #f5f3f0;
+    line-height: 1;
+    margin-bottom: 1.5rem;
+  }
+
+  .intro-strip p {
+    color: #f5f3f0;
+    font-size: 0.95rem;
+    line-height: 1.95;
+    font-weight: 400;
+  }
+
+  /* ======================== DIVIDER ======================== */
+  .divider {
+    width: 55px; height: 1px;
+    background: var(--savannah);
+    margin: 1.5rem 0;
+  }
+
+  /* ======================== LOGO SECTION ======================== */
+  .logo-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 85vh;
+  }
+
+  .logo-section-text {
+    background: var(--ivory);
+    padding: 7rem 5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .logo-section-text .section-label {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-size: 0.65rem;
+    color: var(--forest);
+    margin-bottom: 1rem;
+  }
+
+  .logo-section-text h2 {
+    font-size: clamp(2.2rem, 3.5vw, 3.4rem);
+    color: var(--redwine);
+    line-height: 1.15;
+    margin-bottom: 1.5rem;
+  }
+
+  .logo-section-text h2 em { font-style: italic; color: var(--savannah); }
+
+  .logo-section-text p {
+    color: var(--redwine);
+    line-height: 1.85;
+    font-size: 0.9rem;
+    margin-bottom: 2.5rem;
+    max-width: 420px;
+    opacity: 0.82;
+  }
+
+  .services-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .services-list li {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.84rem;
+    color: var(--redwine);
+    font-weight: 400;
+    opacity: 0.78;
+  }
+
+  .services-list li::before {
+    content: '';
+    width: 22px; height: 1px;
+    background: var(--savannah);
+    flex-shrink: 0;
+  }
+
+  .logo-section-image {
+    background: var(--forest);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    min-height: 500px;
+  }
+
+  .logo-section-image .leaf-bg {
+    position: absolute; inset: 0;
+    background-image: url('assets/HERO.png');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.18;
+  }
+
+  .logo-section-image .placeholder-img {
+    position: relative; z-index: 2;
+    width: 70%; max-width: 380px;
+    aspect-ratio: 1;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(232,209,209,0.12);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .placeholder-img span {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-size: 0.58rem;
+    color: rgba(232,209,209,0.35);
+  }
+
+  /* Brand section: pure forest, no bottom padding — bridge is separate */
+  .brand-section {
+    background: var(--forest);
+    padding: 8rem 5rem 6rem;
+  }
+
+  .brand-intro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    align-items: start;
+  }
+
+  .brand-intro .section-label {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-size: 0.65rem;
+    color: var(--rose);
+    margin-bottom: 1rem;
+  }
+
+  .brand-intro h2 {
+    font-size: clamp(2rem, 3vw, 3rem);
+    color: var(--ivory);
+    line-height: 1.2;
+  }
+
+  .brand-intro p {
+    color: rgba(239,238,237,0.72);
+    line-height: 1.85;
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+
+  /* Standalone full-width block: forest top half, pine bottom half, image centered on divide */
+  .brand-bridge-wrap {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to bottom, var(--forest) 50%, #0d3d35 50%);
+  }
+
+  .brand-bridge-img {
+    position: relative;
+    z-index: 2;
+    width: 55%;
+    max-width: 680px;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    display: block;
+    border: 4px solid rgba(239,238,237,0.08);
+  }
+
+  .brand-bridge-placeholder {
+    position: relative;
+    z-index: 2;
+    width: 55%;
+    max-width: 680px;
+    aspect-ratio: 16 / 9;
+    background: rgba(255,255,255,0.05);
+    border: 1px dashed rgba(232,209,209,0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  .brand-bridge-placeholder span {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-size: 0.58rem;
+    color: rgba(232,209,209,0.35);
+  }
+
+  /* ======================== BRAND FLOW ======================== */
+  .brand-flow-wrap {
+    background: #0d3d35;
+    padding: 5.5rem 3rem;
+  }
+
+  .brand-flow-wrap .flow-label {
+    text-align: center;
+    margin-bottom: 0.75rem;
+    color: var(--rose);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-size: 0.65rem;
+  }
+
+  .brand-flow-wrap h3 {
+    font-size: clamp(1.6rem, 2.5vw, 2.5rem);
+    color: var(--ivory);
+    text-align: center;
+    margin-bottom: 0.75rem;
+  }
+
+  .brand-flow-wrap .flow-subtext {
+    text-align: center;
+    color: rgba(239,238,237,0.5);
+    font-size: 0.84rem;
+    font-weight: 400;
+    margin-bottom: 3.5rem;
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .flow-boxes {
+    display: flex;
+    align-items: stretch;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .flow-box {
+    flex: 1;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(232,209,209,0.1);
+    padding: 0 0 2.5rem;
+    position: relative;
+    transition: background 0.3s;
+    overflow: hidden;
+  }
+
+  .flow-box:hover { background: rgba(232,209,209,0.05); }
+
+  .flow-box:not(:last-child)::after {
+    content: '→';
+    position: absolute;
+    right: -1px; top: 50%;
+    transform: translateY(-50%) translateX(50%);
+    color: var(--savannah);
+    font-size: 1rem;
+    background: #0d3d35;
+    padding: 0.25rem 0.1rem;
+    z-index: 2;
+  }
+
+  /* Square photo spot at top of each flow box */
+  .flow-box-photo {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background: rgba(255,255,255,0.04);
+    border-bottom: 1px solid rgba(232,209,209,0.1);
+    margin-bottom: 1.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.5rem;
+    overflow: hidden;
+  }
+
+  .flow-box-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .flow-box-photo span {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.55rem;
+    color: rgba(232,209,209,0.3);
+  }
+
+  .flow-box-inner {
+    padding: 0 1.75rem;
+  }
+
+  .flow-box-num {
+    font-family: 'Playfair Display', serif;
+    font-weight: 300;
+    font-size: 3rem;
+    color: rgba(232, 209, 209, 0.5);
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+
+  .flow-box h4 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 300;
+    font-size: 1.3rem;
+    color: var(--ivory);
+    margin-bottom: 0.4rem;
+  }
+
+  .flow-box .flow-box-sub {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-size: 0.58rem;
+    color: var(--rose);
+    margin-bottom: 1rem;
+  }
+
+  .flow-box p {
+    color: rgba(239,238,237,0.5);
+    font-size: 0.8rem;
+    line-height: 1.75;
+    margin-bottom: 1.2rem;
+  }
+
+  .flow-box-options { display: flex; flex-direction: column; gap: 0.4rem; }
+
+  .option-pill {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(232,209,209,0.1);
+    padding: 0.4rem 0.75rem;
+    font-size: 0.75rem;
+    color: rgba(239,238,237,0.6);
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .option-pill::before {
+    content: '';
+    width: 4px; height: 4px;
+    background: var(--savannah);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .flow-result {
+    background: var(--forest) !important;
+    border-color: rgba(232,209,209,0.18) !important;
+  }
+
+  .flow-result .result-badge {
+    display: inline-block;
+    background: rgba(232,209,209,0.08);
+    color: var(--rose);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-size: 0.58rem;
+    padding: 0.35rem 0.75rem;
+    margin-top: 1rem;
+  }
+
+  .flow-box-num {
+    font-family: 'Playfair Display', serif;
+    font-weight: 300;
+    font-size: 3rem;
+    color: rgba(232, 209, 209, 0.5);
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+
+  /* ======================== COLLATERAL SECTION ======================== */
+  .collateral-section {
+    min-height: 80vh;
+    background: var(--ivory);
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .collateral-leaf-bg {
+    position: absolute;
+    right: 0; top: 0; bottom: 0;
+    width: 45%;
+    background-image: url('assets/Artboard_3_3x.png');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.35;
+  }
+
+  .collateral-inner {
+    position: relative; z-index: 2;
+    padding: 7rem 5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+  }
+
+  .collateral-text .section-label {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-size: 0.65rem;
+    color: var(--forest);
+    margin-bottom: 1rem;
+  }
+
+  .collateral-text h2 {
+    font-size: clamp(2rem, 3vw, 3rem);
+    color: var(--redwine);
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+  }
+
+  .collateral-text p {
+    color: var(--redwine);
+    opacity: 0.78;
+    line-height: 1.85;
+    font-size: 0.9rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .collateral-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .collateral-card {
+    background: #fff;
+    border: 1px solid rgba(18,38,32,0.08);
+    padding: 1.75rem 1.5rem;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+
+  .collateral-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(18,38,32,0.1);
+  }
+
+  .collateral-card h4 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 300;
+    font-size: 1.1rem;
+    color: var(--redwine);
+    margin-bottom: 0.5rem;
+  }
+
+  .collateral-card p {
+    font-size: 0.78rem;
+    color: rgba(34,15,16,0.62);
+    line-height: 1.65;
+  }
+
+  .collateral-card .card-icon {
+    width: 28px; height: 2px;
+    background: var(--savannah);
+    margin-bottom: 1rem;
+  }
+
+  /* ======================== PROJECT SHOWCASES ======================== */
+  .project-showcase {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 75vh;
+  }
+
+  .showcase-text {
+    background: #f5f3f0;
+    padding: 5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .showcase-text .proj-num {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-size: 0.65rem;
+    color: var(--savannah);
+    margin-bottom: 1.25rem;
+  }
+
+  .showcase-text h3 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 300;
+    font-size: clamp(2rem, 3vw, 3.2rem);
+    color: var(--redwine);
+    line-height: 1.15;
+    margin-bottom: 1.25rem;
+  }
+
+  .showcase-text .divider {
+    width: 45px; height: 1px;
+    background: var(--savannah);
+    margin-bottom: 1.25rem;
+  }
+
+  .showcase-text p {
+    font-size: 0.88rem;
+    color: rgba(34,15,16,0.65);
+    line-height: 1.85;
+    max-width: 380px;
+    margin-bottom: 2rem;
+  }
+
+  .btn-brass {
+    display: inline-block;
+    align-self: flex-start;
+    width: fit-content;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.67rem;
+    padding: 0.45rem 0.9rem;
+    text-decoration: none;
+    background: var(--savannah);
+    color: var(--ivory);
+    border: 1px solid var(--savannah);
+    transition: background 0.3s, border-color 0.3s;
+  }
+
+  .btn-brass:hover {
+    background: #b57848;
+    border-color: #b57848;
+    letter-spacing: 0.1em;
+  }
+
+  .showcase-photo {
+    background: #c4bfbb;
+    min-height: 75vh;
+  }
+
+  .showcase-photo img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* ======================== FOOTER ======================== */
+  footer {
+    background: var(--redwine);
+    padding: 2.5rem 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid rgba(232,209,209,0.08);
+  }
+
+  footer img { height: 42px; width: auto; mix-blend-mode: screen; }
+
+  footer p {
+    color: rgba(239,238,237,0.3);
+    font-size: 0.72rem;
+    font-weight: 400;
+  }
+
+  /* ======================== REVEAL ======================== */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ======================== RESPONSIVE ======================== */
+  @media (max-width: 900px) {
+    nav { padding: 0.8rem 1.5rem; }
+    .nav-links { gap: 1.5rem; }
+    .nav-logo-img { height: 34px; }
+    .intro-strip { padding: 4rem 2rem; flex-direction: column; gap: 2.5rem; }
+    .intro-photo { width: 100%; height: 320px; }
+    .intro-text { text-align: left; }
+    .project-showcase { grid-template-columns: 1fr; }
+    .project-showcase .showcase-photo { order: -1; min-height: 50vw; }
+    .showcase-text { padding: 3rem 2rem; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; padding: 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html">
+    <img src="assets/Header Logo.png" alt="Kudu Creative Services" class="nav-logo-img">
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="collections.html">Collections</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero"></section>
+
+<!-- WELCOME SECTION -->
+<section class="intro-strip" id="intro">
+  <img src="assets/Sophia.JPG" alt="Sophia Klaves" class="intro-photo reveal">
+  <div class="intro-text">
+    <p class="sub reveal">Graphic Designer</p>
+    <h2 class="reveal">Sophia Klaves</h2>
+    <p class="reveal">
+      Kudu Creative is my personal design brand, built from the ground up as both a passion project and a living showcase of my work. Everything here, from the identity and collateral to the site itself, was designed by me. I am a full time graphic designer with a heart for building eye-catching brands, crafting logos, signage, and print collateral, and creating designs that leave a lasting impression.
+    </p>
+  </div>
+</section>
+
+<!-- PROJECT SHOWCASES -->
+
+<!-- 01 — text left, photo right -->
+<section class="project-showcase">
+  <div class="showcase-text">
+    <p class="proj-num reveal">Project 1</p>
+    <h3 class="reveal">Slate Media</h3>
+    <div class="divider reveal"></div>
+    <p class="reveal">Slate Media needed a complete brand identity, and I designed every piece of it — logo, color palette, typography, and brand elements. The client needed to feel polished and professional while staying fresh and relevant in the fast-moving world of videography and social media, and every design decision was made with that balance in mind.</p>
+    <a href="collections.html#project-1" class="btn-brass reveal">View Collection</a>
+  </div>
+  <div class="showcase-photo">
+    <img src="assets/Slate/Cover Photo .jpg" alt="Slate">
+  </div>
+</section>
+
+<!-- 02 — photo left, text right -->
+<section class="project-showcase">
+  <div class="showcase-photo">
+    <img src="assets/Nature/Cover Photo.jpg" alt="Nature & Bone">
+  </div>
+  <div class="showcase-text">
+    <p class="proj-num reveal">Project 2</p>
+    <h3 class="reveal">Nature & Bone</h3>
+    <div class="divider reveal"></div>
+    <p class="reveal">Nature & Bone's full brand identity was built from scratch — logo, color palette, font choices, and brand elements, all designed by me. The client wanted something that felt health-conscious and trustworthy without losing the warmth and playfulness that defines the pet world, and I crafted each element to hit both marks.</p>
+    <a href="collections.html#project-2" class="btn-brass reveal">View Collection</a>
+  </div>
+</section>
+
+<!-- 03 — text left, photo right -->
+<section class="project-showcase">
+  <div class="showcase-text">
+    <p class="proj-num reveal">Project 3</p>
+    <h3 class="reveal">Yukon Running</h3>
+    <div class="divider reveal"></div>
+    <p class="reveal">Yukon Running's entire brand identity was created by me — logo, color palette, typography, and brand elements — designed to feel luxurious yet grounded. The client needed a brand that could live across apparel and equipment while appealing to serious athletes.</p>
+    <a href="collections.html#project-3" class="btn-brass reveal">View Collection</a>
+  </div>
+  <div class="showcase-photo">
+    <img src="assets/Yukon/Cover Photo.jpg" alt="Yukon">
+  </div>
+</section>
+
+<!-- 04 — photo left, text right -->
+<section class="project-showcase">
+  <div class="showcase-photo">
+    <img src="assets/Templates/1.jpg" alt="Template Design">
+  </div>
+  <div class="showcase-text">
+    <p class="proj-num reveal">Project 4</p>
+    <h3 class="reveal">Template Design</h3>
+    <div class="divider reveal"></div>
+    <p class="reveal">These template designs were created for real estate marketing — thoughtfully curated for a library of templates built to serve any property client. From senior living communities to student apartments, each template was designed to adapt to the unique needs of any location.</p>
+    <a href="collections.html#project-4" class="btn-brass reveal">View Collection</a>
+  </div>
+</section>
+
+
+<!-- 05 — text left, photo right -->
+<section class="project-showcase">
+  <div class="showcase-text">
+    <p class="proj-num reveal">Project 5</p>
+    <h3 class="reveal">Digital Media</h3>
+    <div class="divider reveal"></div>
+    <p class="reveal">Much of my work is print materials, but I have also had plenty of experience creating social and media ads for various platforms.</p>
+    <a href="collections.html#project-5" class="btn-brass reveal">View Collection</a>
+  </div>
+  <div class="showcase-photo">
+    <img src="assets/Digital Ads/3.jpg" alt="Digital Media">
+  </div>
+</section>
+
+<!-- VERSE -->
+<section style="background: var(--forest); padding: 5rem 3rem; text-align: center;">
+  <p style="font-family: 'Playfair Display', serif; font-weight: 300; font-size: clamp(2rem, 3vw, 3.2rem); color: var(--rose); margin-bottom: 1rem;">Psalm 98:6</p>
+  <p style="font-family: 'Playfair Display', serif; font-weight: 300; font-size: clamp(0.9rem, 1.8vw, 1.26rem); color: rgba(239,238,237,0.65); font-style: italic; max-width: 680px; margin: 0 auto; line-height: 1.9;">...with trumpets and the blast of the shofar, shout for joy before the Lord, the King.</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <img src="assets/Header Logo.png" alt="Kudu Creative Services">
+  <p>&copy; 2025 Kudu Creative Services. All rights reserved.</p>
+</footer>
+
+<script>
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  reveals.forEach(el => observer.observe(el));
+
+</script>
+</body>
+</html>

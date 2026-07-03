@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Collections — Kudu Creative</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --forest:   #122620;
+    --redwine:  #220f10;
+    --savannah: #9e663f;
+    --ivory:    #efeeed;
+    --cotton:   #f5f3f0;
+    --rose:     #e8d1d1;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    color: var(--ivory);
+    background: var(--redwine);
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 300;
+  }
+
+  /* ======================== NAV ======================== */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    background: var(--redwine);
+    padding: 0.9rem 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(232,209,209,0.1);
+  }
+
+  .nav-logo-img {
+    height: 42px;
+    width: auto;
+    display: block;
+    mix-blend-mode: screen;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.68rem;
+    color: rgba(239,238,237,0.75);
+    text-decoration: none;
+    transition: color 0.3s;
+    position: relative;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px; left: 0;
+    width: 0; height: 1px;
+    background: var(--rose);
+    transition: width 0.3s ease;
+  }
+
+  .nav-links a:hover { color: var(--rose); }
+  .nav-links a:hover::after { width: 100%; }
+  .nav-links a.active { color: var(--rose); }
+  .nav-links a.active::after { width: 100%; }
+
+  /* ======================== PAGE TITLE ======================== */
+  .page-title {
+    padding: 9rem 0 3.5rem;
+    text-align: center;
+    background: var(--redwine);
+    border-bottom: 1px solid rgba(232,209,209,0.07);
+  }
+
+  .page-title span {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    font-size: 0.65rem;
+    color: var(--rose);
+    display: block;
+    margin-bottom: 0.75rem;
+  }
+
+  .page-title h1 {
+    font-size: clamp(2rem, 4.5vw, 4.5rem);
+    color: var(--ivory);
+    line-height: 1;
+  }
+
+  /* ======================== PROJECT SECTIONS ======================== */
+  .project-section {
+    width: 100%;
+  }
+
+  /* The full-screen photo hero */
+  .project-hero {
+    position: relative;
+    width: 100%;
+    height: 75vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  /* Gray placeholder — replace src with actual photo later */
+  .project-bg {
+    position: absolute;
+    inset: 0;
+    background: #b8b3ae;
+    transition: filter 0.5s ease, opacity 0.45s ease;
+  }
+
+  .project-bg.fading {
+    opacity: 0;
+  }
+
+  /* Slight darkening on hover to bring forward the overlay text */
+  .project-hero:hover .project-bg {
+    filter: brightness(0.88);
+  }
+
+  /* Subtle gradient so text is always legible */
+  .project-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.35) 100%);
+  }
+
+  /* Centered content on the photo */
+  .project-center {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.75rem;
+    text-align: center;
+    padding: 2rem;
+    transition: opacity 0.3s ease;
+  }
+
+  .project-hero.hide-center .project-center {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* Left / right navigation arrows */
+  .hero-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 4;
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    border: 1px solid rgba(239,238,237,0.45);
+    background: rgba(0,0,0,0.22);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease, background 0.25s, border-color 0.25s;
+  }
+
+  .hero-arrow.arrow-left  { left: 2.2rem; }
+  .hero-arrow.arrow-right { right: 2.2rem; }
+
+  .project-section.arrows-visible .hero-arrow {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .hero-arrow:hover {
+    background: rgba(0,0,0,0.48);
+    border-color: rgba(239,238,237,0.8);
+  }
+
+  .hero-arrow svg { display: block; }
+
+  .project-name {
+    font-family: 'Playfair Display', serif;
+    font-weight: 300;
+    font-size: clamp(1.76rem, 4vw, 4rem);
+    color: var(--ivory);
+    letter-spacing: 0.02em;
+    line-height: 1;
+    transition: letter-spacing 0.4s ease;
+  }
+
+  .project-hero:hover .project-name {
+    letter-spacing: 0.06em;
+  }
+
+  /* Plus/close button */
+  .plus-btn {
+    width: 52px; height: 52px;
+    border: 1px solid rgba(239,238,237,0.6);
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s, border-color 0.3s, transform 0.4s ease;
+    flex-shrink: 0;
+  }
+
+  .plus-btn:hover {
+    background: rgba(239,238,237,0.1);
+    border-color: var(--ivory);
+  }
+
+  .project-section.open .plus-btn {
+    transform: rotate(45deg);
+    background: var(--savannah);
+    border-color: var(--savannah);
+  }
+
+  .plus-btn svg {
+    display: block;
+    transition: stroke 0.3s;
+  }
+
+  /* Project number — bottom left of hero */
+  .project-num {
+    position: absolute;
+    bottom: 2rem;
+    left: 2.5rem;
+    z-index: 2;
+    font-family: 'Playfair Display', serif;
+    font-weight: 300;
+    font-size: 1rem;
+    color: rgba(239,238,237,0.35);
+    letter-spacing: 0.1em;
+  }
+
+  /* Scroll hint — bottom center, fades out after first scroll */
+  .scroll-hint {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    opacity: 0.4;
+    transition: opacity 0.5s;
+  }
+
+  .scroll-hint span {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-size: 0.5rem;
+    color: var(--ivory);
+  }
+
+  .scroll-hint-line {
+    width: 1px;
+    height: 30px;
+    background: linear-gradient(to bottom, rgba(239,238,237,0.6), transparent);
+    animation: scrollPulse 1.8s ease-in-out infinite;
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.4; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(0.6); transform-origin: top; }
+  }
+
+  body.scrolled .scroll-hint { opacity: 0; pointer-events: none; }
+
+  /* ======================== GALLERY PANEL ======================== */
+  .project-panel {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    background: var(--cotton);
+  }
+
+  .project-panel-inner {
+    padding: 3.5rem 4rem 4.5rem;
+  }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
+
+  .gallery-box {
+    aspect-ratio: 4 / 3;
+    background: #cac5c0;
+    border: none;
+    transition: transform 0.3s, filter 0.3s, outline 0.2s;
+    cursor: pointer;
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .gallery-box:hover {
+    transform: scale(1.02);
+    filter: brightness(0.9);
+  }
+
+  .gallery-box.active-thumb {
+    outline-color: var(--savannah);
+  }
+
+  /* Thumbnail caption label */
+  .thumb-caption {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: rgba(0,0,0,0.52);
+    color: rgba(239,238,237,0.85);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    font-size: 0.5rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 0.3rem 0.5rem;
+    pointer-events: none;
+  }
+
+  /* Hero caption label */
+  .hero-caption {
+    position: absolute;
+    bottom: 2.5rem;
+    right: 3rem;
+    z-index: 3;
+    background: rgba(0,0,0,0.45);
+    color: rgba(239,238,237,0.85);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    font-size: 0.55rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 0.35rem 0.8rem;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+  }
+
+  .hero-caption.visible {
+    opacity: 1;
+  }
+
+  /* ======================== FOOTER ======================== */
+  footer {
+    background: var(--redwine);
+    padding: 2.5rem 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid rgba(232,209,209,0.08);
+  }
+
+  footer img { height: 42px; width: auto; mix-blend-mode: screen; }
+
+  footer p {
+    color: rgba(239,238,237,0.3);
+    font-size: 0.72rem;
+    font-weight: 400;
+  }
+
+  /* ======================== RESPONSIVE ======================== */
+  @media (max-width: 900px) {
+    nav { padding: 0.8rem 1.5rem; }
+    .nav-links { gap: 1.5rem; }
+    .nav-logo-img { height: 34px; }
+    .page-title { padding: 7rem 2rem 3rem; }
+    .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+    .project-panel-inner { padding: 2.5rem 1.5rem 3rem; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; padding: 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html">
+    <img src="assets/Header Logo.png" alt="Kudu Creative" class="nav-logo-img">
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="collections.html" class="active">Collections</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- PAGE TITLE -->
+<div class="page-title">
+  <h1>Collections</h1>
+  <p style="font-family: 'Montserrat', sans-serif; font-weight: 400; font-size: 0.85rem; color: rgba(239,238,237,0.55); letter-spacing: 0.12em; margin-top: 1rem; line-height: 1.8;">Below is a showcase of my experience in creating brand identities,<br>logos, print collateral, digital media, and overall layout design.</p>
+</div>
+
+<!-- ===== PROJECT 1 ===== -->
+<div class="project-section" id="project-1">
+  <div class="project-hero">
+    <div class="project-bg" style="background-image: url('assets/Slate/Cover Photo .jpg'); background-size: cover; background-position: center;"></div>
+    <button class="hero-arrow arrow-left" aria-label="Previous image">
+      <svg width="10" height="17" viewBox="0 0 10 17" fill="none"><polyline points="9,1 1,8.5 9,16" stroke="var(--ivory)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="project-center">
+      <h2 class="project-name">Slate Media</h2>
+      <button class="plus-btn" aria-label="Open project">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <line x1="7" y1="1" x2="7" y2="13" stroke="var(--ivory)" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="1" y1="7" x2="13" y2="7" stroke="var(--ivory)" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+    <button class="hero-arrow arrow-right" aria-label="Next image">
+      <svg width="10" height="17" viewBox="0 0 10 17" fill="none"><polyline points="1,1 9,8.5 1,16" stroke="var(--ivory)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="hero-caption"></div>
+    <span class="project-num">01</span>
+    <div class="scroll-hint">
+      <span>Scroll</span>
+      <div class="scroll-hint-line"></div>
+    </div>
+  </div>
+  <div class="project-panel">
+    <div class="project-panel-inner">
+      <div class="gallery-grid">
+        <div class="gallery-box"><img src="assets/Slate/1 .jpg" alt="Slate 1" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        <div class="gallery-box"><img src="assets/Slate/2.jpg" alt="Slate 2" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        <div class="gallery-box"><img src="assets/Slate/3.jpg" alt="Slate 3" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        <div class="gallery-box"><img src="assets/Slate/4.jpg" alt="Slate 4" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        <div class="gallery-box"><img src="assets/Slate/5.jpg" alt="Slate 5" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        <div class="gallery-box"><img src="assets/Slate/6.jpg" alt="Slate 6" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        <div class="gallery-box"><img src="assets/Slate/7.jpg" alt="Slate 7" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PROJECT 2 ===== -->
+<div class="project-section" id="project-2">
+  <div class="project-hero">
+    <div class="project-bg" style="background-image: url('assets/Nature/Cover Photo.jpg'); background-size: cover; background-position: center;"></div>
+    <button class="hero-arrow arrow-left" aria-label="Previous image">
+      <svg width="10" height="17" viewBox="0 0 10 17" fill="none"><polyline points="9,1 1,8.5 9,16" stroke="var(--ivory)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="project-center">
+      <h2 class="project-name">Nature & Bone</h2>
+      <button class="plus-btn" aria-label="Open project">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <line x1="7" y1="1" x2="7" y2="13" stroke="var(--ivory)" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="1" y1="7" x2="13" y2="7" stroke="var(--ivory)" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+    <button class="hero-arrow arrow-right" aria-label="Next image">
+      <svg width="10" height="17" viewBox="0 0 10 17" fill="none"><polyline points="1,1 9,8.5 1,16" stroke="var(--ivory)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="hero-caption"></div>
+    <span class="project-num">02</span>
+  </div>
+  <div class="project-panel">
+    <div class="project-panel-inner">
+      <div class="gallery-grid">
+        <div class="gallery-box"><img src="assets/Nature/1.jpg" alt="Nature & Bone 1" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        <div class="gallery-box"><img src="assets/Nature/2.jpg" alt="Nature & Bone 2" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        <div class="gallery-box"><img src="assets/Nature/3.jpg" alt="Nature & Bone 3" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        <div class="gallery-box"><img src="assets/Nature/4.jpg" alt="Nature & Bone 4" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        <div class="gallery-box"><img src="assets/Nature/5.png" alt="Nature & Bone 5" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        <div class="gallery-box"><img src="assets/Nature/6.jpg" alt="Nature & Bone 6" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        <div class="gallery-box"><img src="assets/Nature/7.jpg" alt="Nature & Bone 7" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PROJECT 3 ===== -->
+<div class="project-section" id="project-3">
+  <div class="project-hero">
+    <div class="project-bg" style="background-image: url('assets/Yukon/Cover Photo.jpg'); background-size: cover; background-position: center;"></div>
+    <button class="hero-arrow arrow-left" aria-label="Previous image">
+      <svg width="10" height="17" viewBox="0 0 10 17" fill="none"><polyline points="9,1 1,8.5 9,16" stroke="var(--ivory)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="project-center">
+      <h2 class="project-name">Yukon Running</h2>
+      <button class="plus-btn" aria-label="Open project">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <line x1="7" y1="1" x2="7" y2="13" stroke="var(--ivory)" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="1" y1="7" x2="13" y2="7" stroke="var(--ivory)" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+    <button class="hero-arrow arrow-right" aria-label="Next image">
+      <svg width="10" height="17" viewBox="0 0 10 17" fill="none"><polyline points="1,1 9,8.5 1,16" stroke="var(--ivory)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="hero-caption"></div>
+    <span class="project-num">03</span>
+  </div>
+  <div class="project-panel">
+    <div class="project-panel-inner">
+      <div class="gallery-grid">
+        <div class="gallery-box"><img src="assets/Yukon/1.jpg" alt="Yukon 1" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        <div class="gallery-box"><img src="assets/Yukon/2.jpg" alt="Yukon 2" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        <div class="gallery-box"><img src="assets/Yukon/4.jpg" alt="Yukon 4" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        <div class="gallery-box"><img src="assets/Yukon/5 .jpg" alt="Yukon 5" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        <div class="gallery-box"><img src="assets/Yukon/6.jpg" alt="Yukon 6" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        <div class="gallery-box"><img src="assets/Yukon/7.jpg" alt="Yukon 7" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        <div class="gallery-box"><img src="assets/Yukon/8.jpg" alt="Yukon 8" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PROJECT 4 ===== -->
+<div class="project-section" id="project-4">
+  <div class="project-hero">
+    <div class="project-bg" style="background-image: url('assets/Templates/1.jpg'); background-size: cover; background-position: center;"></div>
+    <button class="hero-arrow arrow-left" aria-label="Previous image">
+      <svg width="10" height="17" viewBox="0 0 10 17" fill="none"><polyline points="9,1 1,8.5 9,16" stroke="var(--ivory)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="project-center">
+      <h2 class="project-name">Template Design</h2>
+      <button class="plus-btn" aria-label="Open project">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <line x1="7" y1="1" x2="7" y2="13" stroke="var(--ivory)" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="1" y1="7" x2="13" y2="7" stroke="var(--ivory)" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+    <button class="hero-arrow arrow-right" aria-label="Next image">
+      <svg width="10" height="17" viewBox="0 0 10 17" fill="none"><polyline points="1,1 9,8.5 1,16" stroke="var(--ivory)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="hero-caption"></div>
+    <span class="project-num">04</span>
+  </div>
+  <div class="project-panel">
+    <div class="project-panel-inner">
+      <div class="gallery-grid">
+        <div class="gallery-box"><img src="assets/Templates/1.jpg" alt="Template 1" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        <div class="gallery-box"><img src="assets/Templates/2.jpg" alt="Template 2" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        <div class="gallery-box"><img src="assets/Templates/3.jpg" alt="Template 3" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        <div class="gallery-box"><img src="assets/Templates/4.jpg" alt="Template 4" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        <div class="gallery-box"><img src="assets/Templates/5.jpg" alt="Template 5" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        <div class="gallery-box"><img src="assets/Templates/6.jpg" alt="Template 6" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ===== PROJECT 5 ===== -->
+<div class="project-section" id="project-5">
+  <div class="project-hero">
+    <div class="project-bg" style="background-image: url('assets/Digital Ads/3.jpg'); background-size: cover; background-position: center;"></div>
+    <button class="hero-arrow arrow-left" aria-label="Previous image">
+      <svg width="10" height="17" viewBox="0 0 10 17" fill="none"><polyline points="9,1 1,8.5 9,16" stroke="var(--ivory)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="project-center">
+      <h2 class="project-name">Digital Media</h2>
+      <button class="plus-btn" aria-label="Open project">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <line x1="7" y1="1" x2="7" y2="13" stroke="var(--ivory)" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="1" y1="7" x2="13" y2="7" stroke="var(--ivory)" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+    <button class="hero-arrow arrow-right" aria-label="Next image">
+      <svg width="10" height="17" viewBox="0 0 10 17" fill="none"><polyline points="1,1 9,8.5 1,16" stroke="var(--ivory)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="hero-caption"></div>
+    <span class="project-num">05</span>
+  </div>
+  <div class="project-panel">
+    <div class="project-panel-inner">
+      <div class="gallery-grid">
+        <div class="gallery-box"><img src="assets/Digital Ads/1.jpg" alt="Digital Media 1" style="width:100%;height:100%;object-fit:cover;display:block;"><span class="thumb-caption">Brand applied to pre-made template</span></div>
+        <div class="gallery-box"><img src="assets/Digital Ads/2.jpg" alt="Digital Media 2" style="width:100%;height:100%;object-fit:cover;display:block;"><span class="thumb-caption">Brand applied to pre-made template</span></div>
+        <div class="gallery-box"><img src="assets/Digital Ads/3.jpg" alt="Digital Media 3" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        <div class="gallery-box"><img src="assets/Digital Ads/4.jpg" alt="Digital Media 4" style="width:100%;height:100%;object-fit:cover;display:block;"><span class="thumb-caption">Brand applied to pre-made template</span></div>
+        <div class="gallery-box"><img src="assets/Digital Ads/5.jpg" alt="Digital Media 5" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        <div class="gallery-box"><img src="assets/Digital Ads/6.jpg" alt="Digital Media 6" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <img src="assets/Header Logo.png" alt="Kudu Creative Services">
+  <p>&copy; 2025 Kudu Creative Services. All rights reserved.</p>
+</footer>
+
+<script>
+  // Track current gallery index per section
+  const galleryState = new Map();
+
+  // Store each section's original cover image on load
+  document.querySelectorAll('.project-section').forEach(section => {
+    const bg = section.querySelector('.project-bg');
+    bg.dataset.originalBg = bg.style.backgroundImage;
+  });
+
+  // Helper: get gallery images for a section
+  function getGalleryImgs(section) {
+    return Array.from(section.querySelectorAll('.gallery-box img'));
+  }
+
+  // Helper: crossfade the hero to a new image src and update active thumb + caption
+  function swapHero(section, src, idx) {
+    const bg = section.querySelector('.project-bg');
+    bg.classList.add('fading');
+    setTimeout(() => {
+      bg.style.backgroundImage = `url('${src}')`;
+      bg.classList.remove('fading');
+    }, 450);
+
+    // Update active thumb
+    const boxes = section.querySelectorAll('.gallery-box');
+    boxes.forEach(b => b.classList.remove('active-thumb'));
+    if (idx !== undefined && boxes[idx]) boxes[idx].classList.add('active-thumb');
+
+    // Update hero caption
+    const heroCaption = section.querySelector('.hero-caption');
+    if (heroCaption) {
+      const activeBox = idx !== undefined ? boxes[idx] : null;
+      const thumbCaption = activeBox ? activeBox.querySelector('.thumb-caption') : null;
+      if (thumbCaption) {
+        heroCaption.textContent = thumbCaption.textContent;
+        heroCaption.classList.add('visible');
+      } else {
+        heroCaption.classList.remove('visible');
+      }
+    }
+  }
+
+  // Helper: reset hero to original cover and hide arrows
+  function resetHero(section) {
+    const bg = section.querySelector('.project-bg');
+    const original = bg.dataset.originalBg;
+    if (bg.style.backgroundImage !== original) {
+      bg.classList.add('fading');
+      setTimeout(() => {
+        bg.style.backgroundImage = original;
+        bg.classList.remove('fading');
+      }, 450);
+    }
+    section.querySelectorAll('.gallery-box').forEach(b => b.classList.remove('active-thumb'));
+    section.classList.remove('arrows-visible');
+    galleryState.delete(section);
+    const cap = section.querySelector('.hero-caption');
+    if (cap) cap.classList.remove('visible');
+  }
+
+  // Accordion: click hero to expand / collapse
+  document.querySelectorAll('.project-hero').forEach(hero => {
+    hero.addEventListener('click', e => {
+      // Don't trigger if clicking an arrow
+      if (e.target.closest('.hero-arrow')) return;
+
+      const section = hero.closest('.project-section');
+      const panel = section.querySelector('.project-panel');
+      const isOpen = section.classList.contains('open');
+
+      // Close all and reset
+      document.querySelectorAll('.project-section').forEach(s => {
+        s.classList.remove('open');
+        s.querySelector('.project-panel').style.maxHeight = '0';
+        resetHero(s);
+      });
+
+      // Open this one if it was closed
+      if (!isOpen) {
+        section.classList.add('open');
+        panel.style.maxHeight = panel.scrollHeight + 'px';
+        setTimeout(() => {
+          section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+      }
+    });
+  });
+
+  // Thumbnail click → swap hero + show arrows
+  document.querySelectorAll('.project-panel').forEach(panel => {
+    panel.addEventListener('click', e => {
+      e.stopPropagation();
+      const box = e.target.closest('.gallery-box');
+      if (!box) return;
+      const img = box.querySelector('img');
+      if (!img) return;
+
+      const section = panel.closest('.project-section');
+      const imgs = getGalleryImgs(section);
+      const idx = imgs.indexOf(img);
+
+      galleryState.set(section, idx);
+      section.classList.add('arrows-visible');
+      swapHero(section, img.src, idx);
+    });
+  });
+
+  // Arrow navigation
+  document.querySelectorAll('.hero-arrow').forEach(arrow => {
+    // Click: advance or retreat through gallery images
+    arrow.addEventListener('click', e => {
+      e.stopPropagation();
+      const section = arrow.closest('.project-section');
+      const imgs = getGalleryImgs(section);
+      if (!imgs.length) return;
+
+      let idx = galleryState.has(section) ? galleryState.get(section) : 0;
+      if (arrow.classList.contains('arrow-left')) {
+        idx = (idx - 1 + imgs.length) % imgs.length;
+      } else {
+        idx = (idx + 1) % imgs.length;
+      }
+      galleryState.set(section, idx);
+      swapHero(section, imgs[idx].src, idx);
+    });
+
+    // Hover: hide / show the centered project name + plus button
+    const hero = arrow.closest('.project-hero');
+    arrow.addEventListener('mouseenter', () => hero.classList.add('hide-center'));
+    arrow.addEventListener('mouseleave', () => hero.classList.remove('hide-center'));
+  });
+
+  // Hide scroll hint after first scroll
+  window.addEventListener('scroll', () => {
+    document.body.classList.add('scrolled');
+  }, { once: true });
+</script>
+</body>
+</html>
